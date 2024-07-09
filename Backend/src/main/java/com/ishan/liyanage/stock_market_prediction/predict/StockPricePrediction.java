@@ -28,6 +28,9 @@ public class StockPricePrediction {
     private static int exampleLength = 22; // time series length, assume 22 working days per month
 
     public List<ChartResponse> predict() throws IOException {
+        PriceCategory category = PriceCategory.CLOSE; // CLOSE: predict close price
+        File locationToSave = new File("src/main/resources/StockPriceLSTM_".concat(String.valueOf(category)).concat(".zip"));
+
         String file = new ClassPathResource("prices-split-adjusted.csv").getFile().getAbsolutePath();
         String symbol = "GOOG"; // stock name
         int batchSize = 64; // mini-batch size
@@ -36,7 +39,6 @@ public class StockPricePrediction {
         int epochs = 1; // training epochs
 
         log.info("Create dataSet iterator...");
-        PriceCategory category = PriceCategory.CLOSE; // CLOSE: predict close price
         StockDataSetIterator iterator = new StockDataSetIterator(file, symbol, batchSize, exampleLength, splitRatio, category);
         log.info("Load test dataset...");
         List<Pair<INDArray, INDArray>> test = iterator.getTestDataSet();
@@ -44,15 +46,15 @@ public class StockPricePrediction {
         log.info("Build lstm networks...");
         MultiLayerNetwork net = RecurrentNets.buildLstmNetworks(iterator.inputColumns(), iterator.totalOutcomes());
 
-        log.info("Training...");
-        for (int i = 0; i < epochs; i++) {
-            while (iterator.hasNext()) net.fit(iterator.next()); // fit model using mini-batch data
-            iterator.reset(); // reset iterator
-            net.rnnClearPreviousState(); // clear previous state
+        if(!locationToSave.exists()) {
+            log.info("Training...");
+            for (int i = 0; i < epochs; i++) {
+                while (iterator.hasNext()) net.fit(iterator.next()); // fit model using mini-batch data
+                iterator.reset(); // reset iterator
+                net.rnnClearPreviousState(); // clear previous state
+            }
         }
-
         log.info("Saving model...");
-        File locationToSave = new File("src/main/resources/StockPriceLSTM_".concat(String.valueOf(category)).concat(".zip"));
         // saveUpdater: i.e., the state for Momentum, RMSProp, Adagrad etc. Save this to train your network more in the future
         ModelSerializer.writeModel(net, locationToSave, true);
 
