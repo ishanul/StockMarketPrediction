@@ -1,10 +1,19 @@
 package com.ishan.liyanage.stock_market_prediction.model;
 
 public class ChartResponse {
+    private double[] indexes;
     private double[] predicts;
     private double[] actuals;
 
     String category;
+
+    public double[] getIndexes() {
+        return indexes;
+    }
+
+    public void setIndexes(double[] indexes) {
+        this.indexes = indexes;
+    }
 
     public double[] getPredicts() {
         return predicts;

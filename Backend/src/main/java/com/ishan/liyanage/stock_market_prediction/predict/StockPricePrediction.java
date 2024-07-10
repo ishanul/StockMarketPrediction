@@ -5,7 +5,6 @@ import com.ishan.liyanage.stock_market_prediction.model.Pair;
 import com.ishan.liyanage.stock_market_prediction.model.RecurrentNets;
 import com.ishan.liyanage.stock_market_prediction.representation.PriceCategory;
 import com.ishan.liyanage.stock_market_prediction.representation.StockDataSetIterator;
-import com.ishan.liyanage.stock_market_prediction.utils.PlotUtil;
 //import javafx.util.Pair;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.util.ModelSerializer;
@@ -27,12 +26,12 @@ public class StockPricePrediction {
 
     private static int exampleLength = 22; // time series length, assume 22 working days per month
 
-    public List<ChartResponse> predict() throws IOException {
+    public List<ChartResponse> predict(String symbol) throws IOException {
         PriceCategory category = PriceCategory.CLOSE; // CLOSE: predict close price
-        File locationToSave = new File("src/main/resources/StockPriceLSTM_".concat(String.valueOf(category)).concat(".zip"));
+        File locationToSave = new File("src/main/resources/StockPriceLSTM_".concat(String.valueOf(symbol+category)).concat(".zip"));
 
         String file = new ClassPathResource("prices-split-adjusted.csv").getFile().getAbsolutePath();
-        String symbol = "GOOG"; // stock name
+        //String symbol = "GOOG"; // stock name
         int batchSize = 64; // mini-batch size
         double splitRatio = 0.9; // 90% for training, 10% for testing
         //TODO change to 100
@@ -88,8 +87,11 @@ public class StockPricePrediction {
         log.info("Predict,Actual");
         for (int i = 0; i < predicts.length; i++) log.info(predicts[i] + "," + actuals[i]);
         log.info("Plot...");
-        //PlotUtil.plot(predicts, actuals, String.valueOf(category));
+        double[] index = new double[predicts.length];
+        for (int i = 0; i < predicts.length; i++)
+            index[i] = i;
         ChartResponse res = new ChartResponse();
+        res.setIndexes(index);
         res.setActuals(actuals);
         res.setPredicts(predicts);
         res.setCategory(String.valueOf(category));
@@ -130,8 +132,11 @@ public class StockPricePrediction {
                 case 4: name = "Stock VOLUME Amount"; break;
                 default: throw new NoSuchElementException();
             }
-            //PlotUtil.plot(pred, actu, name);
+            double[] index = new double[pred.length];
+            for (int i = 0; i < predicts.length; i++)
+                index[i] = i;
             ChartResponse res = new ChartResponse();
+            res.setIndexes(index);
             res.setActuals(actu);
             res.setPredicts(pred);
             res.setCategory(name);
