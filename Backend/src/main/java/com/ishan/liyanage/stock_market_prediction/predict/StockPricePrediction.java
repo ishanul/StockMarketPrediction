@@ -26,6 +26,40 @@ public class StockPricePrediction {
 
     private static int exampleLength = 22; // time series length, assume 22 working days per month
 
+    public void train(String symbol) throws IOException {
+        PriceCategory category = PriceCategory.CLOSE; // CLOSE: predict close price
+        File locationToSave = new File("src/main/resources/StockPriceLSTM_".concat(String.valueOf(symbol+category)).concat(".zip"));
+
+        String file = new ClassPathResource("prices-split-adjusted.csv").getFile().getAbsolutePath();
+        //String symbol = "GOOG"; // stock name
+        int batchSize = 64; // mini-batch size
+        double splitRatio = 0.9; // 90% for training, 10% for testing
+        //TODO change to 100
+        int epochs = 1; // training epochs
+
+        log.info("Create dataSet iterator...");
+        StockDataSetIterator iterator = new StockDataSetIterator(file, symbol, batchSize, exampleLength, splitRatio, category);
+        log.info("Load test dataset...");
+        List<Pair<INDArray, INDArray>> test = iterator.getTestDataSet();
+
+        log.info("Build lstm networks...");
+        MultiLayerNetwork net = RecurrentNets.buildLstmNetworks(iterator.inputColumns(), iterator.totalOutcomes());
+
+        log.info("Training...");
+        for (int i = 0; i < epochs; i++) {
+            while (iterator.hasNext()) net.fit(iterator.next()); // fit model using mini-batch data
+            iterator.reset(); // reset iterator
+            net.rnnClearPreviousState(); // clear previous state
+        }
+
+        log.info("Saving model...");
+        // saveUpdater: i.e., the state for Momentum, RMSProp, Adagrad etc. Save this to train your network more in the future
+        ModelSerializer.writeModel(net, locationToSave, true);
+        log.info("Load model...");
+        net = ModelSerializer.restoreMultiLayerNetwork(locationToSave);
+        log.info("Done!");
+
+    }
     public List<ChartResponse> predict(String symbol) throws IOException {
         PriceCategory category = PriceCategory.CLOSE; // CLOSE: predict close price
         File locationToSave = new File("src/main/resources/StockPriceLSTM_".concat(String.valueOf(symbol+category)).concat(".zip"));
