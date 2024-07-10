@@ -10,6 +10,7 @@ import com.ishan.liyanage.stock_market_prediction.representation.StockDataSetIte
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.util.ModelSerializer;
 import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.dataset.DataSet;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.io.ClassPathResource;
 import org.slf4j.Logger;
@@ -32,15 +33,9 @@ public class StockPricePrediction {
         BufferedReader br = new BufferedReader(new FileReader("src/main/resources/StockPriceLSTM_".concat(String.valueOf(category)).concat(".log")));
         try {
             String line = br.readLine();
-            log.info(line);
             while (line != null) {
-                if(logs.size() <101) {
-                    logs.add(line);
-                    line = br.readLine();
-                }
-                else{
-                    break;
-                }
+                logs.add(line);
+                line = br.readLine();
             }
         } finally {
             br.close();
@@ -58,7 +53,7 @@ public class StockPricePrediction {
         int batchSize = 64; // mini-batch size
         double splitRatio = 0.9; // 90% for training, 10% for testing
         //TODO change to 100
-        int epochs = 1; // training epochs
+        int epochs = 100; // training epochs
         writer.println("Create dataSet iterator...");
         log.info("Create dataSet iterator...");
         StockDataSetIterator iterator = new StockDataSetIterator(file, symbol, batchSize, exampleLength, splitRatio, category);
@@ -76,8 +71,9 @@ public class StockPricePrediction {
 
         for (int i = 0; i < epochs; i++) {
             while (iterator.hasNext()) {
-                net.fit(iterator.next()); // fit model using mini-batch data
-                writer.println("Training dataset......" + new Date());
+                DataSet next = iterator.next();
+                net.fit(next); // fit model using mini-batch data
+                writer.println(new Date() +" Training dataset......");
                 writer.flush();
             }
             iterator.reset(); // reset iterator
@@ -108,7 +104,7 @@ public class StockPricePrediction {
         int batchSize = 64; // mini-batch size
         double splitRatio = 0.9; // 90% for training, 10% for testing
         //TODO change to 100
-        int epochs = 1; // training epochs
+//        int epochs = 100; // training epochs
 
         log.info("Create dataSet iterator...");
         StockDataSetIterator iterator = new StockDataSetIterator(file, symbol, batchSize, exampleLength, splitRatio, category);
@@ -118,17 +114,17 @@ public class StockPricePrediction {
         log.info("Build lstm networks...");
         MultiLayerNetwork net = RecurrentNets.buildLstmNetworks(iterator.inputColumns(), iterator.totalOutcomes());
 
-        if(!locationToSave.exists()) {
-            log.info("Training...");
-            for (int i = 0; i < epochs; i++) {
-                while (iterator.hasNext()) net.fit(iterator.next()); // fit model using mini-batch data
-                iterator.reset(); // reset iterator
-                net.rnnClearPreviousState(); // clear previous state
-            }
-        }
-        log.info("Saving model...");
-        // saveUpdater: i.e., the state for Momentum, RMSProp, Adagrad etc. Save this to train your network more in the future
-        ModelSerializer.writeModel(net, locationToSave, true);
+//        if(!locationToSave.exists()) {
+//            log.info("Training...");
+//            for (int i = 0; i < epochs; i++) {
+//                while (iterator.hasNext()) net.fit(iterator.next()); // fit model using mini-batch data
+//                iterator.reset(); // reset iterator
+//                net.rnnClearPreviousState(); // clear previous state
+//            }
+//        }
+//        log.info("Saving model...");
+//        // saveUpdater: i.e., the state for Momentum, RMSProp, Adagrad etc. Save this to train your network more in the future
+//        ModelSerializer.writeModel(net, locationToSave, true);
 
         log.info("Load model...");
         net = ModelSerializer.restoreMultiLayerNetwork(locationToSave);
