@@ -1,0 +1,33 @@
+Starting the dataset training.....
+Create dataSet iterator...
+Load test dataset...
+Build lstm networks...
+Training....
+Training dataset......Wed Jul 10 23:02:35 SGT 2024
+Training dataset......Wed Jul 10 23:02:36 SGT 2024
+Training dataset......Wed Jul 10 23:02:37 SGT 2024
+Training dataset......Wed Jul 10 23:02:38 SGT 2024
+Training dataset......Wed Jul 10 23:02:39 SGT 2024
+Training dataset......Wed Jul 10 23:02:40 SGT 2024
+Training dataset......Wed Jul 10 23:02:41 SGT 2024
+Training dataset......Wed Jul 10 23:02:42 SGT 2024
+Training dataset......Wed Jul 10 23:02:43 SGT 2024
+Training dataset......Wed Jul 10 23:02:45 SGT 2024
+Training dataset......Wed Jul 10 23:02:45 SGT 2024
+Training dataset......Wed Jul 10 23:02:47 SGT 2024
+Training dataset......Wed Jul 10 23:02:48 SGT 2024
+Training dataset......Wed Jul 10 23:02:49 SGT 2024
+Training dataset......Wed Jul 10 23:02:51 SGT 2024
+Training dataset......Wed Jul 10 23:02:52 SGT 2024
+Training dataset......Wed Jul 10 23:02:53 SGT 2024
+Training dataset......Wed Jul 10 23:02:54 SGT 2024
+Training dataset......Wed Jul 10 23:02:55 SGT 2024
+Training dataset......Wed Jul 10 23:02:56 SGT 2024
+Training dataset......Wed Jul 10 23:02:58 SGT 2024
+Training dataset......Wed Jul 10 23:02:59 SGT 2024
+Training dataset......Wed Jul 10 23:03:00 SGT 2024
+Training dataset......Wed Jul 10 23:03:01 SGT 2024
+Training dataset......Wed Jul 10 23:03:02 SGT 2024
+Saving model...
+Load model...
+Done!

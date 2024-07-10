@@ -1,6 +1,7 @@
 package com.ishan.liyanage.stock_market_prediction.predict;
 
 import com.ishan.liyanage.stock_market_prediction.model.ChartResponse;
+import com.ishan.liyanage.stock_market_prediction.model.LogResponse;
 import com.ishan.liyanage.stock_market_prediction.model.Pair;
 import com.ishan.liyanage.stock_market_prediction.model.RecurrentNets;
 import com.ishan.liyanage.stock_market_prediction.representation.PriceCategory;
@@ -15,8 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 @Service
@@ -26,38 +26,77 @@ public class StockPricePrediction {
 
     private static int exampleLength = 22; // time series length, assume 22 working days per month
 
+    public LogResponse readLog() throws IOException {
+        PriceCategory category = PriceCategory.CLOSE; // CLOSE: predict close price
+        List<String> logs = new ArrayList<>();
+        BufferedReader br = new BufferedReader(new FileReader("src/main/resources/StockPriceLSTM_".concat(String.valueOf(category)).concat(".log")));
+        try {
+            String line = br.readLine();
+            log.info(line);
+            while (line != null) {
+                if(logs.size() <101) {
+                    logs.add(line);
+                    line = br.readLine();
+                }
+                else{
+                    break;
+                }
+            }
+        } finally {
+            br.close();
+        }
+        return new LogResponse(logs.toArray(new String[0]));
+    }
     public void train(String symbol) throws IOException {
         PriceCategory category = PriceCategory.CLOSE; // CLOSE: predict close price
         File locationToSave = new File("src/main/resources/StockPriceLSTM_".concat(String.valueOf(symbol+category)).concat(".zip"));
-
+        PrintWriter writer = new PrintWriter("src/main/resources/StockPriceLSTM_".concat(String.valueOf(category)).concat(".log"), "UTF-8");
+        writer.println("Starting the dataset training.....");
+        writer.flush();
         String file = new ClassPathResource("prices-split-adjusted.csv").getFile().getAbsolutePath();
         //String symbol = "GOOG"; // stock name
         int batchSize = 64; // mini-batch size
         double splitRatio = 0.9; // 90% for training, 10% for testing
         //TODO change to 100
         int epochs = 1; // training epochs
-
+        writer.println("Create dataSet iterator...");
         log.info("Create dataSet iterator...");
         StockDataSetIterator iterator = new StockDataSetIterator(file, symbol, batchSize, exampleLength, splitRatio, category);
         log.info("Load test dataset...");
+        writer.println("Load test dataset...");
         List<Pair<INDArray, INDArray>> test = iterator.getTestDataSet();
 
         log.info("Build lstm networks...");
+        writer.println("Build lstm networks...");
+
         MultiLayerNetwork net = RecurrentNets.buildLstmNetworks(iterator.inputColumns(), iterator.totalOutcomes());
 
         log.info("Training...");
+        writer.println("Training....");
+
         for (int i = 0; i < epochs; i++) {
-            while (iterator.hasNext()) net.fit(iterator.next()); // fit model using mini-batch data
+            while (iterator.hasNext()) {
+                net.fit(iterator.next()); // fit model using mini-batch data
+                writer.println("Training dataset......" + new Date());
+                writer.flush();
+            }
             iterator.reset(); // reset iterator
             net.rnnClearPreviousState(); // clear previous state
         }
 
         log.info("Saving model...");
+        writer.println("Saving model...");
+
         // saveUpdater: i.e., the state for Momentum, RMSProp, Adagrad etc. Save this to train your network more in the future
         ModelSerializer.writeModel(net, locationToSave, true);
         log.info("Load model...");
+        writer.println("Load model...");
+
         net = ModelSerializer.restoreMultiLayerNetwork(locationToSave);
         log.info("Done!");
+        writer.println("Done!");
+
+        writer.close();
 
     }
     public List<ChartResponse> predict(String symbol) throws IOException {
