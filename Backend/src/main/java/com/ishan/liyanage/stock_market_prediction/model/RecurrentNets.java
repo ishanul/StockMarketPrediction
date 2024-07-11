@@ -1,5 +1,6 @@
 package com.ishan.liyanage.stock_market_prediction.model;
 
+import com.ishan.liyanage.stock_market_prediction.listener.ScoreIterationListener;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
 import org.deeplearning4j.nn.conf.BackpropType;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
@@ -10,9 +11,10 @@ import org.deeplearning4j.nn.conf.layers.GravesLSTM;
 import org.deeplearning4j.nn.conf.layers.RnnOutputLayer;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.nn.weights.WeightInit;
-import org.deeplearning4j.optimize.listeners.ScoreIterationListener;
 import org.nd4j.linalg.activations.Activation;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
+
+import java.io.PrintWriter;
 
 
 public class RecurrentNets {
@@ -27,7 +29,7 @@ public class RecurrentNets {
     private static final double dropoutRatio = 0.2;
     private static final int truncatedBPTTLength = 22;
 
-    public static MultiLayerNetwork buildLstmNetworks(int nIn, int nOut) {
+    public static MultiLayerNetwork buildLstmNetworks(int nIn, int nOut, PrintWriter writer) {
         MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
                 .seed(seed)
                 .iterations(iterations)
@@ -72,7 +74,7 @@ public class RecurrentNets {
 
         MultiLayerNetwork net = new MultiLayerNetwork(conf);
         net.init();
-        net.setListeners(new ScoreIterationListener(100));
+        net.setListeners(new ScoreIterationListener(100, writer));
         return net;
     }
 }
