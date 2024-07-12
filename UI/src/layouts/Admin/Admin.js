@@ -5,10 +5,10 @@
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/black-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
+* Copyright 2023 Ishan Liyanage (https://www.creative-tim.com)
 * Licensed under MIT (https://github.com/creativetimofficial/black-dashboard-react/blob/master/LICENSE.md)
 
-* Coded by Creative Tim
+* Coded by Ishan Liyanage
 
 =========================================================
 
@@ -106,7 +106,7 @@ function Admin(props) {
               routes={routes}
               logo={{
                 outterLink: "https://www.creative-tim.com/",
-                text: "Creative Tim",
+                text: "Ishan Liyanage",
                 imgSrc: logo,
               }}
               toggleSidebar={toggleSidebar}

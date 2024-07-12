@@ -1,26 +1,6 @@
-Starting the dataset training.....GOOG
+Starting the dataset training.....NFLX
 Create dataSet iterator...
-Load test dataset...GOOG
-Build lstm networks...GOOG
-Training....GOOG
-Score at iteration 0 is 0.06579045014863995
-Score at iteration 100 is 0.15326344836272324
-Score at iteration 200 is 0.019064877148844455
-Score at iteration 300 is 0.06397541378043338
-Score at iteration 400 is 0.03713576470060219
-Score at iteration 500 is 0.014951970025060985
-Score at iteration 600 is 0.007575720484543214
-Score at iteration 700 is 0.010641695123598197
-Score at iteration 800 is 0.010674232570169282
-Score at iteration 900 is 0.005160162036083227
-Score at iteration 1000 is 0.029361768000142154
-Score at iteration 1100 is 0.011284292460194035
-Score at iteration 1200 is 0.018680633197163374
-Score at iteration 1300 is 0.008925836513970482
-Score at iteration 1400 is 0.012422943288393698
-Score at iteration 1500 is 0.007982709788922572
-Score at iteration 1600 is 0.009582555941517877
-Score at iteration 1700 is 0.008344646609655289
-Saving model...GOOG
-Load model...GOOG
-Done! - GOOG
+Load test dataset...NFLX
+Build lstm networks...NFLX
+Training....NFLX
+Score at iteration 0 is 1.5421600769687274
