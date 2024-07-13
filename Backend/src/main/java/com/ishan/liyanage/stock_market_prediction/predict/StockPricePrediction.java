@@ -80,7 +80,7 @@ public class StockPricePrediction {
             iterator.reset(); // reset iterator
             net.rnnClearPreviousState(); // clear previous state
         }
-
+        writer.println("");
         log.info("Saving model...");
         writer.println("Saving model..." + symbol);
 
