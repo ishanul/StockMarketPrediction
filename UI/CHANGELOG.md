@@ -101,7 +101,7 @@ Happy Hacking!
   - @types/markerclustererplus@2.1.33
   - @types/googlemaps@3.39.3
   - typescript@3.8.3
-- For Creative Tim copyrights
+- For Ishan Liyanage copyrights
   - gulp@4.0.2
   - gulp-append-prepend@1.0.8
 
@@ -140,4 +140,4 @@ npm WARN deprecated popper.js@1.16.1: Popper changed home, find its new releases
 ### Original Release
 
 - Added Reactstrap as base framework
-- Added design from PRODUCT NAME by Creative Tim
+- Added design from PRODUCT NAME by Ishan Liyanage
