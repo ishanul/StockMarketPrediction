@@ -63,7 +63,7 @@ function Typography() {
               <CardHeader className="mb-5">
                 <h5 className="card-category">Train your model</h5>
                 <CardTitle tag="h3">
-                  Upload Latest Market Data and Train the Model
+                  Upload Latest Market Data to Backend and Re-Train the Model
                 </CardTitle>
               </CardHeader>
               <CardBody>

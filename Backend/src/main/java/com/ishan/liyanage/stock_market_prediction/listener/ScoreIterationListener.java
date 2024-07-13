@@ -40,7 +40,12 @@ public class ScoreIterationListener implements IterationListener {
             this.invoke();
             double result = model.score();
             log.info("Score at iteration " + this.iterCount + " is " + result);
+            writer.println("");
             writer.println("Score at iteration " + this.iterCount + " is " + result);
+            writer.flush();
+        }
+        else{
+            writer.print(".");
             writer.flush();
         }
 

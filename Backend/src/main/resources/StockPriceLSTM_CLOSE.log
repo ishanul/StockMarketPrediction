@@ -3,6 +3,8 @@ Create dataSet iterator...
 Load test dataset...NFLX
 Build lstm networks...NFLX
 Training....NFLX
-Score at iteration 0 is 1.5421600769687274
-Score at iteration 100 is 0.5298760307991738
-Score at iteration 200 is 0.03316038135859097
+
+Score at iteration 0 is 1.542159955861708
+...................................................................................................
+Score at iteration 100 is 0.5298754334534204
+....................
