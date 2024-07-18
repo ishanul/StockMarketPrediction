@@ -12,6 +12,7 @@
 1.	Open the command line.
 2.	Move the <Project Folder>/Backend/target
 3.	Run below command
+   
 `java -jar stock-market-prediction-0.0.1-SNAPSHOT.jar`
 
 ### Output should be like below.
@@ -41,6 +42,7 @@
 1.	Open the command line.
 2.	Move the <Project Folder>/Backend/target
 3.	Run below command
+   
 `npm install`
 
 ### Output should be like below (It will take some time.)
@@ -59,9 +61,11 @@ To address all issues (including breaking changes), run:
 Run `npm audit` for details.
 ```
 4.	Run the below command
+   
 `npm start`
 
 ### Output should be like below
+
 ```
 $ npm start
 
