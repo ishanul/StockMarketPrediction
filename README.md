@@ -12,7 +12,7 @@
 1.	Open the command line.
 2.	Move the <Project Folder>/Backend/target
 3.	Run below command
-java -jar stock-market-prediction-0.0.1-SNAPSHOT.jar
+`java -jar stock-market-prediction-0.0.1-SNAPSHOT.jar`
 
 ### Output should be like below.
 
