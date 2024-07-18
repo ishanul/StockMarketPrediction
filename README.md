@@ -85,3 +85,9 @@ To create a production build, use npm run build.
 webpack compiled successfully
 ```
 
+![Screenshot of the landing page.](https://github.com/ishanul/StockMarketPrediction/blob/main/UI/github-assets/Picture1.png)
+
+![Screenshot of Re Traning.](https://github.com/ishanul/StockMarketPrediction/blob/main/UI/github-assets/Picture2.png)
+
+![Screenshot of Facebook stock price analysis.](https://github.com/ishanul/StockMarketPrediction/blob/main/UI/github-assets/Picture3.png)
+
